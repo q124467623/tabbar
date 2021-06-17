@@ -1,16 +1,17 @@
 <template>
     <div id="tab-bar-item" @click="btnClick">
-        <!-- <img src="../../assets/img/tabbar/home.svg" alt=""> -->
-        <!-- <div>首页</div> -->
-        <slot v-if="!isActive" name="item-icon"></slot>
-        <slot v-else name="item-icon-active"></slot>
-        <slot :class="{active: isActive}" name="item-text"></slot>
+        <div v-if="!isActive"> <slot name="item-icon"></slot></div>
+        <div v-else><slot name="item-icon-active"></slot></div>
+        <div :class="{active: isActive}"><slot name="item-text"></slot></div>
     </div>
 </template>
 
 <script>
 export default {
     name:'TabBarItem',
+    props:{
+        path:String
+    },
     data() {
         return {
             isActive:false
@@ -18,7 +19,7 @@ export default {
     },
     methods: {
         btnClick(){
-            this.isActive = !this.isActive
+            this.$router.replace(this.path)
         }
     },
 }
