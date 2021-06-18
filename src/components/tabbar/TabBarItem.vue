@@ -2,7 +2,7 @@
     <div id="tab-bar-item" @click="btnClick">
         <div v-if="!isActive"> <slot name="item-icon"></slot></div>
         <div v-else><slot name="item-icon-active"></slot></div>
-        <div :class="{active: isActive}"><slot name="item-text"></slot></div>
+        <div :style="activeStyle"><slot name="item-text"></slot></div>
     </div>
 </template>
 
@@ -10,16 +10,28 @@
 export default {
     name:'TabBarItem',
     props:{
-        path:String
+        path:String,
+        activeColor:{
+            type:String,
+            default:"red"
+        }
     },
     data() {
         return {
-            isActive:false
+            // isActive:false
+        }
+    },
+    computed:{
+        isActive(){//$route是处于活跃状态的路由
+            return this.$route.path == this.path
+        },
+        activeStyle(){
+            return this.isActive ? {color:this.activeColor}:{}
         }
     },
     methods: {
         btnClick(){
-            this.$router.replace(this.path)
+            this.$router.replace(this.path).catch(err => {})
         }
     },
 }
@@ -34,9 +46,9 @@ export default {
   height: 49px;
   font-size: 14px;
 }
-.active {
+/* .active {
     color: red;
-}
+} */
 
 #tab-bar-item img{
   width: 24px;
